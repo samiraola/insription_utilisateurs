@@ -1,3 +1,45 @@
+<?php
+ session_start();
+//verification des champs
+   if(!empty($_POST['email']) &&!empty($_POST['password']) ){
+
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+
+  //connexion à la base de données
+
+  $connexion = mysqli_connect('localhost', 'root','', 'BLOGS' );
+  if(!$connexion){
+   die('Erreur de connexion à la Base de Donnée');
+  }
+
+  //selection de la table dans la bbase de donnée
+   $selection ="SELECT * FROM user WHERE email='$email' && password='$password' ";
+
+   $result = mysqli_query($connexion,$selection);
+
+    if(!$result){
+        echo"oups une erreur c'est produit";
+    }
+    else{
+        echo"ok";
+    }
+   $recupe = mysqli_fetch_assoc($result);
+
+   //verification 
+    if($recupe){
+     $_SESSION['user_id']=$recupe['id'];
+     echo "validé";
+
+     header('LOCATION:./connecter/dashboard/dashboard.php');
+
+    }else{
+     echo "l'utilisateur n'existe pas";
+    }
+    // var_dump($recupe);
+   }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -170,7 +212,7 @@
     <header>
         <a class="logo" href="">myBlog</a>
         <ul>
-            <li><a href="/myBlog">Accueil</a></li>
+            <li><a href="./">Accueil</a></li>
             <li><a href="">Catégories</a></li>
             <li><a href="connexion.php">Connexion</a></li>
             <form action="" method="post">
@@ -182,14 +224,14 @@
     <main>
         <div id="content">
             <h3>Connexion</h3>
-            <form action="./connecter/index.php" method="">
+            <form action="" method="post">
                 <div class="group">
                     <label for="email">Email</label>
-                    <input type="text" name="" id="email" placeholder="johnDoe@ex.ci">
+                    <input type="email" name="email" id="email" placeholder="johnDoe@ex.ci">
                 </div>
                 <div class="group">
                     <label for="password">Mot de passe</label>
-                    <input type="text" name="" id="password" placeholder="mot de passe">
+                    <input type="password" name="password" id="password" placeholder="mot de passe">
                 </div>
                 <input type="submit" value="Se connecter">
             </form>

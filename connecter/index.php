@@ -1,3 +1,18 @@
+<?php
+//connxion a la base de base de donner
+$connexion=mysqli_connect('localhost','root','' ,'BLOGS');
+if(!$connexion){ die('Erreur de connexion à la Base de Donnée');}
+//selection des articles
+$requete = "SELECT * FROM article";
+$query = mysqli_query($connexion,$requete);
+if(!$query){
+    echo "OOps! Une erreur est survenue, veuillez réessayer plus tard!";
+} else{
+    $articles = mysqli_fetch_all($query,MYSQLI_ASSOC);
+    
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -204,52 +219,23 @@
         <div id="content">
             <h3>Articles postés</h3>
             <div id="posted">
+               <?php
+                    foreach($articles as $article):
+                ?>
                 <div class="article">
-                    <img src="https://media.istockphoto.com/id/1319623001/photo/caesar-salad-with-crispy-bread-and-bacon-healthy-food-style.webp?s=1024x1024&w=is&k=20&c=gvTJfggHVKAWWCTdcEHIziVAfQmZJfgibmokDtLdiCc="
+                    <img src="<?php echo $article["image"];?>"
                         alt="">
-                    <a class="title" href="">Mon Article 1</a>
+                    <a class="title" href=""   ><?php echo $article["title"];?></a>
                     <div class="description">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores, libero? Ipsa magnam, eaque
-                            consectetur fuga esse accusamus voluptatem, laudantium quidem nulla nihil maiores iure
-                            veniam, amet ratione facere expedita. Perspiciatis.</p>
-                        <p class="date">Mardi 10 Octobre 2023</p>
+                        <p><?php echo $article["description"];?></p>
+                        <p class="date"><?php echo $article["date"];?></p>
                     </div>
                 </div>
-                <div class="article">
-                    <img src="https://media.istockphoto.com/id/1319623001/photo/caesar-salad-with-crispy-bread-and-bacon-healthy-food-style.webp?s=1024x1024&w=is&k=20&c=gvTJfggHVKAWWCTdcEHIziVAfQmZJfgibmokDtLdiCc="
-                        alt="">
-                    <a class="title" href="">Mon Article 1</a>
-                    <div class="description">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores, libero? Ipsa magnam, eaque
-                            consectetur fuga esse accusamus voluptatem, laudantium quidem nulla nihil maiores iure
-                            veniam, amet ratione facere expedita. Perspiciatis.</p>
-                        <p class="date">Mardi 10 Octobre 2023</p>
-                    </div>
-                </div>
-                <div class="article">
-                    <img src="https://media.istockphoto.com/id/1319623001/photo/caesar-salad-with-crispy-bread-and-bacon-healthy-food-style.webp?s=1024x1024&w=is&k=20&c=gvTJfggHVKAWWCTdcEHIziVAfQmZJfgibmokDtLdiCc="
-                        alt="">
-                    <a class="title" href="">Mon Article 1</a>
-                    <div class="description">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores, libero? Ipsa magnam, eaque
-                            consectetur fuga esse accusamus voluptatem, laudantium quidem nulla nihil maiores iure
-                            veniam, amet ratione facere expedita. Perspiciatis.</p>
-                        <p class="date">Mardi 10 Octobre 2023</p>
-                    </div>
-                </div>
-                <div class="article">
-                    <img src="https://media.istockphoto.com/id/1319623001/photo/caesar-salad-with-crispy-bread-and-bacon-healthy-food-style.webp?s=1024x1024&w=is&k=20&c=gvTJfggHVKAWWCTdcEHIziVAfQmZJfgibmokDtLdiCc="
-                        alt="">
-                    <a class="title" href="">Mon Article 1</a>
-                    <div class="description">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores, libero? Ipsa magnam, eaque
-                            consectetur fuga esse accusamus voluptatem, laudantium quidem nulla nihil maiores iure
-                            veniam, amet ratione facere expedita. Perspiciatis.</p>
-                        <p class="date">Mardi 10 Octobre 2023</p>
-                    </div>
-                </div>
+                <?php endforeach;?>
             </div>
         </div>
+
+        
     </main>
 </body>
 
