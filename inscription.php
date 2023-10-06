@@ -26,7 +26,11 @@
     if($query){
         echo "insertion valide ! ";
     }
-    
+
+    header('LOCATION: connexion.php');
+   
+
+
 }
 
 ?>

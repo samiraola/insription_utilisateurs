@@ -11,9 +11,23 @@ $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
 
  $query=mysqli_query ($connexion,$selection);
 
- $recuperation=mysqli_fetch_assoc($query);
- if($recuperation){
-    var_dump($recuperation);
+ $user=mysqli_fetch_assoc($query);
+ if($user){
+    if(!empty($_POST['title'])&&!empty($_POST['img_url'])&&!empty($_POST['decription']) && !empty($_POST['category']) && !empty($_POST['content'])){
+        $title =$_POST['title'];
+        $image =  $_POST['img_url'];
+        $decription = $_POST['decription'];
+        $category = $_POST['category'];
+        $content = $_POST['content'];
+        $requete = "INSERT INTO article (title,image,decription,category,content,user_id)";
+        $requete .= "VALUES ('$title','$image','$decription','$category','$content','$sessionUserId')";
+        $execute = mysqli_query($connexion,$requete);
+        if($execute){
+            echo "nouvelle article ajouter";
+        }else{
+            echo "echec";
+        }
+    }
  }else{
     die("utilisateur inconnu");
  }
@@ -237,18 +251,18 @@ $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
     <main>
         <div id="content">
             <h3>Ajout d'un nouvel article</h3>
-            <form action="">
+            <form action="" method="post"  >
                 <div class="group">
                     <label for="title">Titre de l'article</label>
-                    <input type="text" name="" id="title" placeholder="">
+                    <input type="text" name="title" id="title" placeholder="">
                 </div>
                 <div class="group">
                     <label for="img_url">Image(lien url) de l'article</label>
-                    <input type="text" name="" id="img_url" placeholder="">
+                    <input type="text" name="img_url" id="img_url" placeholder="">
                 </div>
                 <div class="group">
                     <label for="decription">Description de l'article</label>
-                    <input type="text" name="" id="decription" placeholder="">
+                    <input type="text" name="decription" id="decription" placeholder="">
                 </div>
                 <div class="group">
                     <label for="category">Categorie de l'article</label>

@@ -1,16 +1,26 @@
-<?php
-//connxion a la base de base de donner
-$connexion=mysqli_connect('localhost','root','' ,'BLOGS');
-if(!$connexion){ die('Erreur de connexion à la Base de Donnée');}
-//selection des articles
-$requete = "SELECT * FROM article";
-$query = mysqli_query($connexion,$requete);
-if(!$query){
-    echo "OOps! Une erreur est survenue, veuillez réessayer plus tard!";
-} else{
-    $articles = mysqli_fetch_all($query,MYSQLI_ASSOC);
-    
+ <?php
+session_start();
+$connexion = mysqli_connect ('localhost', 'root','', 'BLOGS' );
+if(!$connexion){
+    die('Erreur de connexion à la Base de Donnée');
+     }
+
+if(!empty($_SESSION['user_id'])){
+$sessionUserId = $_SESSION['user_id'];
+$selection="SELECT * FROM user WHERE id='$sessionUserId' ";
+
+ $query=mysqli_query ($connexion,$selection);
+
+ $recuperation=mysqli_fetch_assoc($query);
+ if($recuperation){
+   
+ }else{
+    die("utilisateur inconnu");
+ }
+}else{
+    header('LOCATION:../../connexion.php');
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -205,10 +215,10 @@ if(!$query){
     <header>
         <a class="logo" href="">myBlog</a>
         <ul>
-            <li>Brou Fabien</li>
+            <li><?php echo $article["firstname"].$article["lastname"] ;?></li>
             <li><a href="./index.php">Accueil</a></li>
             <li><a href="">Catégories</a></li>
-            <li><a href="../index.php">Deconnexion</a></li>
+            <li><a href="./dashboard/deconnexion.php">Deconnexion</a></li>
             <form action="" method="post">
                 <input type="search" name="search" id="search" placeholder="rechercher">
             </form>

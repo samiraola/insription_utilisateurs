@@ -12,12 +12,12 @@ $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
  $recuperation=mysqli_fetch_assoc($query);
  if($recuperation){
     unset($_SESSION['user_id']);
-    header ('LOCATION:../connexion.php');
+    header('LOCATION: ../../connexion.php');
  }else{
     die("utilisateur inconnu");
  }
 }else{
-    header('LOCATION:../../connexion.php');
+   header('LOCATION: ../../connexion.php');
 }
 
 ?>

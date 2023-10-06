@@ -3,17 +3,19 @@ session_start();
 $connexion = mysqli_connect ('localhost', 'root','', 'BLOGS' );
 if(!$connexion){
     die('Erreur de connexion à la Base de Donnée');
-     }
-echo $_SESSION['user_id'];
+    }
 if(!empty($_SESSION['user_id'])){
 $sessionUserId = $_SESSION['user_id'];
 $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
 
  $query=mysqli_query ($connexion,$selection);
 
- $recuperation=mysqli_fetch_assoc($query);
- if($recuperation){
-    var_dump($recuperation);
+ $user = mysqli_fetch_assoc($query);
+ if($user){
+    $requete = "SELECT * FROM article WHERE user_id= '$sessionUserId' ";
+    $execute = mysqli_query($connexion,$requete);
+    $articles = mysqli_fetch_all($execute,MYSQLI_ASSOC);
+    
  }else{
     die("utilisateur inconnu");
  }
@@ -202,33 +204,22 @@ $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
                     </tr>
                 </thead>
                 <tbody>
+                    <?php 
+                    foreach($articles as $article): ?>
+                    
+                    
+                   
                     <tr>
-                        <td>1</td>
-                        <td>Un titre par défaut</td>
-                        <td><img src="https://plus.unsplash.com/premium_photo-1695925076117-69d7051e3585?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzM3x8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60" alt="" width="100px" height="100px"></td>
-                        <td>Une petite description en quelques lignes</td>
-                        <td>Cuisine</td>
-                        <td>10/10/2023</td>
+                        <td><?php echo $article['id']    ?></td>
+                        <td><?php echo $article['title']    ?></td>
+                        <td><img src="<?php echo $article['image']    ?>" alt="" width="100px" height="100px"></td>
+                        <td><?php echo $article['description']    ?></td>
+                        <td><?php echo $article['categorie']    ?></td>
+                        <td><?php echo $article['date']    ?></td>
                         <td><div class="action"><a href="modifier.php">Editer</a><a href="supprimer.php" onclick="Delete(event)">Supprimer</a></div></td>
+
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Un titre par défaut</td>
-                        <td><img src="https://plus.unsplash.com/premium_photo-1695925076117-69d7051e3585?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzM3x8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60" alt="" width="100px" height="100px"></td>
-                        <td>Une petite description en quelques lignes</td>
-                        <td>Cuisine</td>
-                        <td>10/10/2023</td>
-                        <td><div class="action"><a href="modifier.php">Editer</a><a href="supprimer.php" onclick="Delete(event)">Supprimer</a></div></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Un titre par défaut</td>
-                        <td><img src="https://plus.unsplash.com/premium_photo-1695925076117-69d7051e3585?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzM3x8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60" alt="" width="100px" height="100px"></td>
-                        <td>Une petite description en quelques lignes</td>
-                        <td>Cuisine</td>
-                        <td>10/10/2023</td>
-                        <td><div class="action"><a href="modifier.php">Editer</a><a href="supprimer.php" onclick="Delete(event)">Supprimer</a></div></td>
-                    </tr>
+                    <?php endforeach;  ?>
                 </tbody>
             </table>
         </div>
