@@ -22,8 +22,10 @@
         $query2 = mysqli_query($connexion, $selecuser);
 
         $user = mysqli_fetch_assoc($query2);
+       
         
     }
+    
 }
 else{
     die("accès interdit");
@@ -233,10 +235,9 @@ else{
                     <p><?php echo $article['content']; ?></p>
                 </div>
                 <div class="details">
-                    <p class="name"><?php echo $user['firstname'].' '. $user['lastname']; ?></p>
-                    <p class="date"><?php echo date('l d F Y',strtotime($article["date"]));
-                   
-                    ?>
+                    <p class="name"><?php echo $user['firstname'].' '. $user['lastname']; ?>
+                </p>
+                    <p class="date"><?php echo date('l d F Y',strtotime($article["date"])); ?>
                 </p>
                 </div>
                 

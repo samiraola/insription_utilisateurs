@@ -216,7 +216,7 @@ $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
                         <td><?php echo $article['description']    ?></td>
                         <td><?php echo $article['categorie']    ?></td>
                         <td><?php echo $article['date']    ?></td>
-                        <td><div class="action"><a href="modifier.php">Editer</a><a href="supprimer.php" onclick="Delete(event)">Supprimer</a></div></td>
+                        <td><div class="action"><a href="modifier.php?id=<?php echo $article['id']; ?>">Editer</a><a href="supprimer.php?id=<?php echo $article['id']; ?> " onclick="Delete(event)">Supprimer</a></div></td>
 
                     </tr>
                     <?php endforeach;  ?>

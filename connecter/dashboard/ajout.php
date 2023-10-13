@@ -4,26 +4,26 @@ $connexion = mysqli_connect ('localhost', 'root','', 'BLOGS' );
 if(!$connexion){
     die('Erreur de connexion à la Base de Donnée');
      }
-echo $_SESSION['user_id'];
+// echo $_SESSION['user_id'];
 if(!empty($_SESSION['user_id'])){
 $sessionUserId = $_SESSION['user_id'];
 $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
 
- $query=mysqli_query ($connexion,$selection);
+$query=mysqli_query ($connexion,$selection);
 
- $user=mysqli_fetch_assoc($query);
+$user=mysqli_fetch_assoc($query);
  if($user){
-    if(!empty($_POST['title'])&&!empty($_POST['img_url'])&&!empty($_POST['decription']) && !empty($_POST['category']) && !empty($_POST['content'])){
+    if(!empty($_POST['title']) && !empty($_POST['img_url'])&&!empty($_POST['decription']) && !empty($_POST['category']) && !empty($_POST['content'])){
         $title =$_POST['title'];
         $image =  $_POST['img_url'];
         $decription = $_POST['decription'];
         $category = $_POST['category'];
         $content = $_POST['content'];
-        $requete = "INSERT INTO article (title,image,decription,category,content,user_id)";
+        $requete = "INSERT INTO article (title,image,description,categorie,content,user_id) ";
         $requete .= "VALUES ('$title','$image','$decription','$category','$content','$sessionUserId')";
         $execute = mysqli_query($connexion,$requete);
         if($execute){
-            echo "nouvelle article ajouter";
+            
         }else{
             echo "echec";
         }
@@ -268,7 +268,7 @@ $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
                     <label for="category">Categorie de l'article</label>
                     <select name="category" id="category">
                         <option value="cuisine">Cuisine</option>
-                        <option value="éducation">Éducation</option>
+                        <option value="education">Éducation</option>
                         <option value="hygiène">Hygiène</option>
                     </select>
                 </div>

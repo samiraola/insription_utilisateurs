@@ -11,6 +11,7 @@ $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
  $query=mysqli_query ($connexion,$selection);
 
  $recuperation=mysqli_fetch_assoc($query);
+ 
  if($recuperation){
  }else{
     die("utilisateur inconnu");
@@ -18,6 +19,46 @@ $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
 }else{
     header('LOCATION:../../connexion.php');
 }
+if (isset($recuperation['id'])) {
+    if(!empty($_POST['email']) or !empty($_POST['img_url']) or !empty($_POST['password'])){
+        $insertion = "UPDATE user SET ";
+        if(!empty($_POST['email'])){
+            $email = $_POST['email'];
+            $insertion .= "email='$email', ";
+        }
+        if(!empty($_POST['img_url'])){
+            $image = $_POST['img_url'];
+            $insertion .= "image='$image', ";
+        }
+        if(!empty($_POST['password'])){
+            $password = $_POST['password'];
+            $cpassword = $_POST['cpassword'];
+            if($password != $cpassword){
+                echo "erreur sur le mot de passe";
+            }else{
+                $insertion .= "password='$password', ";
+            }
+        }
+        $insertion = substr($insertion, 0, -2);
+        $insertion .= " WHERE id = '$sessionUserId'";
+        echo $insertion;
+        $requette = mysqli_query($connexion, $insertion);
+        var_dump($requette);
+        if($requette){
+            $select = " SELECT * FROM user WHERE id = '$sessionUserId' ";
+            $requete = mysqli_query($connexion, $select);
+            $livre = mysqli_fetch_assoc($requete);
+            echo "Modification validée";
+        }
+        else{
+            die("Échec de la mise à jour");
+        }
+    }
+    
+} else {
+    echo "ID non défini.";
+}
+
 
 ?>
 
@@ -238,23 +279,23 @@ $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
                     <p><?php echo $recuperation['email'] ?></p>
                 </div>
             </div>
-            <form action="">
+            <form action="" method="post">
                 <h4>Modifier mes informations</h4>
                 <div class="group">
                     <label for="email">Modifier l'email</label>
-                    <input type="email" name="" id="email" placeholder="johnDoe@ex.ci">
+                    <input type="email" name="email" id="email" placeholder="johnDoe@ex.ci"  value="<?php echo $recuperation['email'] ; ?>">
                 </div>
                 <div class="group">
                     <label for="img_url">Modifier le lien de la photo</label>
-                    <input type="url" name="" id="img_url" placeholder="https://images.unsplash.com/photo-1696185082767-29f8095a22a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=700&q=60">
+                    <input type="url" name="img_url" id="img_url" placeholder="https://images.unsplash.com/photo-1696185082767-29f8095a22a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=700&q=60" value="<?php echo $recuperation['image'] ; ?>"    >
                 </div>
                 <div class="group">
                     <label for="password">Nouveau mot de passe</label>
-                    <input type="password" name="" id="password" placeholder="nouveau mot de passe">
+                    <input type="password" name="password" id="password" placeholder="nouveau mot de passe"   >
                 </div>
                 <div class="group">
                     <label for="cpassword">Confirmer mot de passe</label>
-                    <input type="text" name="" id="cpassword" placeholder="confirmer le mot de passe">
+                    <input type="text" name="cpassword" id="cpassword" placeholder="confirmer le mot de passe"  >
                 </div>
                 <input type="submit" value="Modifier mes informations">
             </form>

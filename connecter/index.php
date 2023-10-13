@@ -20,6 +20,14 @@ $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
 }else{
     header('LOCATION:../../connexion.php');
 }
+$requete = "SELECT * FROM article";
+$query = mysqli_query($connexion,$requete);
+if(!$query){
+    echo "OOps! Une erreur est survenue, veuillez réessayer plus tard!";
+} else{
+    $articles = mysqli_fetch_all($query,MYSQLI_ASSOC);
+    
+}
 
 ?>
 
@@ -215,7 +223,10 @@ $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
     <header>
         <a class="logo" href="">myBlog</a>
         <ul>
-            <li><?php echo $article["firstname"].$article["lastname"] ;?></li>
+            <li><?php echo $recuperation['firstname'].' '.$recuperation['lastname'] ;
+    
+            ?>
+        </li>
             <li><a href="./index.php">Accueil</a></li>
             <li><a href="">Catégories</a></li>
             <li><a href="./dashboard/deconnexion.php">Deconnexion</a></li>
@@ -235,7 +246,7 @@ $selection="SELECT * FROM user WHERE id='$sessionUserId' ";
                 <div class="article">
                     <img src="<?php echo $article["image"];?>"
                         alt="">
-                    <a class="title" href=""   ><?php echo $article["title"];?></a>
+                    <a class="title" href="../voir.php?id=<?php echo $article['id'];  ?>"   ><?php echo $article["title"];?></a>
                     <div class="description">
                         <p><?php echo $article["description"];?></p>
                         <p class="date"><?php echo $article["date"];?></p>

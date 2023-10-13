@@ -1,33 +1,57 @@
 <?php
   //on verifie si les champs ne sont pas vides
-  
+    function escape($valeur){
+        return    trim(strip_tags($valeur));
+    }
 
   if(!empty($_POST['firstname']) &&  !empty($_POST['lastname']) &&  !empty($_POST['email'])  &&  !empty($_POST['password']) &&  !empty($_POST['sex']) && !empty($_POST['cpassword'])){
 
     //recuperation des données
-   $firstname =$_POST['firstname'];
-   $lastname =$_POST['lastname'];
-   $email =$_POST['email'];
-   $img_url =$_POST['img_url'];
-   $sex = $_POST['sex'];
-   $password =$_POST['password'];
-   $cpassword =$_POST['cpassword'];
-
+   $firstname =escape($_POST['firstname']);
+   $lastname =escape($_POST['lastname']);
+   $email = escape($_POST['email']);
+   $img_url =escape($_POST['img_url']);
+   $sex = escape ($_POST['sex']);
+   $password = escape($_POST['password']);
+   $cpassword =escape($_POST['cpassword']);
+    if(empty($firstname) or strlen($firstname) < 2  ){
+      $err_firstname = "Erreur sur le firstname";
+    }
+    if(empty($lastname) or strlen($lastname) < 2  ){
+        $err_lastname = "Erreur sur le lastname";
+    }
+    if(empty($email) or strlen($email) < 2  ){
+        $err_email = "Erreur sur le email";
+    }
+    if(empty($password) or strlen($password) < 2  ){
+        $err_password = "Erreur sur le password";
+    }
+    if(empty($cpassword)){
+        $err_cpassword = "Erreur sur le cpassword";
+    }else {
+        if($cpassword != $password){
+            $err_cpassword = "Le mot de passe de confirmation est différent";
+        }
+    }
+    
     //connexion à la base de donnée
-    $connexion = mysqli_connect ('localhost', 'root','', 'BLOGS' );
-    if(!$connexion){ die('Erreur de connexion à la Base de Donnée');
+    if(!isset($err_firstname) && !isset($err_lastname) && !isset($err_email) && !isset($err_password) && !isset($err_cpassword)){
+        $connexion = mysqli_connect ('localhost', 'root','', 'BLOGS' );
+        if(!$connexion){ die('Erreur de connexion à la Base de Donnée');
+        }
+        //insertion des données dans la base de données
+    
+        $result = "INSERT INTO user(firstname,lastname,email,image,sex,password)";
+        $result .= "VALUES ('$firstname','$lastname','$email','$img_url','$sex','$password')";
+    
+        $query = mysqli_query($connexion,$result);
+        if($query){
+            echo "insertion valide ! ";
+        }
+    
+        header('LOCATION: connexion.php');
     }
-    //insertion des données dans la base de données
 
-    $result = "INSERT INTO user(firstname,lastname,email,image,sex,password)";
-    $result .= "VALUES ('$firstname','$lastname','$email','$img_url','$sex','$password')";
-
-    $query = mysqli_query($connexion,$result);
-    if($query){
-        echo "insertion valide ! ";
-    }
-
-    header('LOCATION: connexion.php');
    
 
 
@@ -223,14 +247,21 @@
                 <div class="group">
                     <label for="firstname">Nom</label>
                     <input type="text" name="firstname" id="firstname" placeholder="John">
+                    <?php if(!empty($err_firstname)){
+                        echo $err_firstname;
+                    }   ?>
                 </div>
                 <div class="group">
                     <label for="lastname">Prénoms</label>
                     <input type="text" name="lastname" id="lastname" placeholder="Doe Smith">
+                    <?php if(!empty($err_lastname)){
+                        echo $err_lastname;
+                    }   ?>
                 </div>
                 <div class="group">
                     <label for="img_url">Lien de la photo</label>
                     <input type="url" name="img_url" id="img_url" placeholder="https://images.unsplash.com/photo-1696185082767-29f8095a22a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=700&q=60">
+                   
                 </div>
                 <div class="group">
                     <label for="sex">Sex</label>
@@ -240,14 +271,23 @@
                 <div class="group">
                     <label for="email">Email</label>
                     <input type="text" name="email" id="email" placeholder="johnDoe@ex.ci">
+                    <?php if(!empty($err_email)){
+                        echo $err_email;
+                    }   ?>
                 </div>
                 <div class="group">
                     <label for="password">Mot de passe</label>
                     <input type="text" name="password" id="password" placeholder="mot de passe">
+                    <?php if(!empty($err_password)){
+                        echo $err_password;
+                    }   ?>
                 </div>
                 <div class="group">
                     <label for="cpassword">Confirmer le mot de passe</label>
                     <input type="text" name="cpassword" id="cpassword" placeholder="confirmation du mot de passe">
+                    <?php if(!empty($err_cpassword)){
+                        echo $err_cpassword;
+                    }   ?>
                 </div>
                 <input type="submit" value="S'inscrire">
             </form>
